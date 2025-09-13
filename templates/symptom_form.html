@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giriş Yap</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" />
+
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="container" id="container">
+            <div class="form-container sign-in-container">
+
+                <form method="post" action="">
+                    <h1>Şikayetini Yaz </h1>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Yapay Zekaya Sor</button>
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay-container-content">
+                    <div class="symptoms">
+                        {% if output_to_show %}
+                        <h3>Şikayetler</h3>
+                        <p id="symptom-p">{{ output_to_show}}</p>
+                        {% endif%}
+                    </div>
+                    <div class="disease-name">
+                        {% if disease_predict %}
+                        <h3>Olası Hastalıklar</h3>
+                        {% for i in disease_predict%}
+                        <p id="disease-p">Hastalık : {{ i.0 }}<br>
+                            Tahmin Doğruluk Oranı : {{ i.1 }}
+                        </p>
+                        {% endfor %}
+                        {% endif%}
+                    </div>
+                    <div class="disease-branch">
+                        {% if recommended_branch %}
+                        <h3>Başvurmanız Gereken Dal</h3>
+
+                        {% for i in recommended_branch%}
+                        <p id="branch-p">{{i}}<br>
+                        </p>
+                        {% endfor %}
+                        {% endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-buttons">
+            <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
+            <button data-tooltip="Bilmiyorum"><i class="fa-solid fa-user"></i></button>
+            <button data-tooltip="Randevu Al"><i class="fa-solid fa-stethoscope"></i></button>
+            <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
+        </div>
+        <div class="container treatment-container" id="treatment-response"
+            style="display:none; position:absolute; top:0; left:0; z-index:1000;">
+            <div class="form-container sign-in-container"> </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/ui.js' %}"></script>
+</body>
+
+</html>
