@@ -9,12 +9,19 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
     <div class="page-wrapper">
-        <div class="container" id="container">
+                    <div class="sidebar-buttons">
+                <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
+                <button data-tooltip="Bilmiyorum"><i class="fa-solid fa-user"></i></button>
+                <button data-tooltip="Randevu Al"><i class="fa-solid fa-stethoscope"></i></button>
+                <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
+            </div>
+        <div class="container" id="main-container">
             <div class="form-container sign-in-container">
 
                 <form method="post" action="">
@@ -56,17 +63,13 @@
             </div>
         </div>
 
-        <div class="sidebar-buttons">
-            <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
-            <button data-tooltip="Bilmiyorum"><i class="fa-solid fa-user"></i></button>
-            <button data-tooltip="Randevu Al"><i class="fa-solid fa-stethoscope"></i></button>
-            <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
-        </div>
-        <div class="container treatment-container" id="treatment-response"
-            style="display:none; position:absolute; top:0; left:0; z-index:1000;">
+        <div class="container treatment-container" id="treatment-response" style="display:none;">
             <div class="form-container sign-in-container"> </div>
         </div>
     </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script src="{% static 'js/ui.js' %}"></script>
 </body>

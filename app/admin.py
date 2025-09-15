@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import SymptomRecord
+
+@admin.register(SymptomRecord)
+class SymptomRecordAdmin(admin.ModelAdmin):
+    list_display = ("disease", "branch", "created_at") 

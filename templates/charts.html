@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Son 1 Hafta Eğilimleri</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+    .box-border{
+          	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+			0 10px 10px rgba(0,0,0,0.22);
+    }
+</style>
+</head>
+
+<body style="background: #f9f9f9;">
+    <nav class="relative bg-[#ded8d7] text-white mb-6">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <!-- Mobile menu button-->
+                    <button type="button" command="--toggle" commandfor="mobile-menu"
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
+                        <span class="absolute -inset-0.5"></span>
+                        <span class="sr-only">Open main menu</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
+                            aria-hidden="true" class="size-6 in-aria-expanded:hidden">
+                            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
+                            aria-hidden="true" class="size-6 not-in-aria-expanded:hidden">
+                            <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <div class="flex shrink-0 items-center">
+                        <a href="{% url 'symptom_input' %}">
+                            <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                                alt="Your Company" class="h-8 w-auto" />
+
+                        </a>
+
+                    </div>
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Team</a>
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Team</a>
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Projects</a>
+                            <a href="#"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Calendar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <button type="button"
+                        class="relative rounded-full p-1 text-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+                        <span class="absolute -inset-1.5"></span>
+                        <span class="sr-only">View notifications</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
+                            aria-hidden="true" class="size-6">
+                            <path
+                                d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+
+                    <!-- Profile dropdown -->
+                    <el-dropdown class="relative ml-3">
+                        <button
+                            class="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                            <span class="absolute -inset-1.5"></span>
+                            <span class="sr-only">Open user menu</span>
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                                class="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
+                        </button>
+
+                        <el-menu anchor="bottom end" popover
+                            class="w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Your
+                                profile</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Settings</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Sign
+                                out</a>
+                        </el-menu>
+                    </el-dropdown>
+                </div>
+            </div>
+        </div>
+
+        <el-disclosure id="mobile-menu" hidden class="block sm:hidden">
+            <div class="space-y-1 px-2 pt-2 pb-3">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
+                <a href="#"
+                    class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Team</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Team</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Projects</a>
+                <a href="#"
+                    class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Calendar</a>
+            </div>
+        </el-disclosure>
+    </nav>
+
+
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="flex flex-col gap-y-4">
+            <div class="box-border w-[600px] h-[400px] border-4 p-4 ...">
+                <h2 class="text-lg" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">Hastalık
+                    Eğilimleri</h2>
+                <canvas id="diseaseChart"></canvas>
+            </div>
+
+
+            <div class="box-border w-[600px] h-[400px] border-4 p-4 ...">
+                <h2 class="text-lg" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">Branş Eğilimleri
+                </h2>
+                <canvas id="branchChart"></canvas>
+            </div>
+
+
+            <div class="box-border w-[600px] h-[400px] border-4 p-4 ...">
+                <h2 class="text-lg" style="font-family: 'Montserrat', sans-serif; font-weight: bold;">Semptom Eğilimleri
+                </h2>
+                <canvas id="symptomChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        function interpolateColor(color1, color2, factor = 0.5) {
+            const c1 = color1.match(/\w\w/g).map(x => parseInt(x, 16));
+            const c2 = color2.match(/\w\w/g).map(x => parseInt(x, 16));
+            const result = c1.map((c, i) => Math.round(c + factor * (c2[i] - c)));
+            return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
+        }
+
+        const startColor = '#ff4b2b';
+        const endColor = '#8a2917';
+        const steps = 5;
+        const colors = Array.from({ length: steps }, (_, i) => interpolateColor(startColor, endColor, i / (steps - 1)));
+
+
+        async function drawCharts() {
+            const response = await fetch("/trend_data");
+            const data = await response.json();
+            function drawTop5Chart(elementId, counts, labelText, colorStep) {
+                const labels = Object.keys(counts);
+                const totals = labels.map(l => counts[l].reduce((a, b) => a + b, 0));
+
+                const combined = labels.map((label, i) => ({ label, total: totals[i] }));
+                combined.sort((a, b) => b.total - a.total);
+                const top5 = combined.slice(0, 5);
+
+                const topLabels = top5.map(d => d.label);
+                const topTotals = top5.map(d => d.total);
+
+                new Chart(document.getElementById(elementId), {
+                    type: 'bar',
+                    data: {
+                        labels: topLabels,
+                        datasets: [{
+                            label: labelText,
+                            data: topTotals,
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+
+
+            drawTop5Chart('diseaseChart', data.disease_counts, 'Haftalık Toplam Vaka (En Yüksek 5)', 60);
+
+
+            drawTop5Chart('branchChart', data.branch_counts, 'Haftalık Toplam Hasta (En Yüksek 5)', 90);
+
+            drawTop5Chart('symptomChart', data.symptom_counts, 'Haftalık Toplam Semptom (En Yüksek 5)', 30);
+        }
+
+        drawCharts();
+    </script>
+
+</body>
+
+
+
+</html>

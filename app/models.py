@@ -43,3 +43,13 @@ class MyUser(AbstractBaseUser):
     
     def has_module_perms(self, app_label):
         return self.is_admin
+
+
+
+class SymptomRecord(models.Model):
+    created_at = models.DateField(auto_now_add=True)
+    symptoms = models.TextField()
+    disease = models.CharField(max_length=255)
+    branch = models.CharField(max_length=255)
+    def __str__(self):
+        return f"{self.disease} - ({self.created_at.date()})"

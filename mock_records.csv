@@ -1,0 +1,102 @@
+created_at,symptoms,disease,branch
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-08,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-10,"idrar yaparken ağrı, sık idrara çıkma, yanma hissi",İdrar Yolu Enfeksiyonu,Üroloji
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-14,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-07,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-10,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-08,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-07,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-14,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-11,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-07,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-12,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-13,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-09,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-09,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-09,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-12,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-07,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-08,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-09,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-07,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"idrar yaparken ağrı, sık idrara çıkma, yanma hissi",İdrar Yolu Enfeksiyonu,Üroloji
+2025-09-08,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-11,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-10,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-10,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-11,"idrar yaparken ağrı, sık idrara çıkma, yanma hissi",İdrar Yolu Enfeksiyonu,Üroloji
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-08,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-10,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-07,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-10,"ishal, karın ağrısı, bulantı",Gastroenterit,Gastroenteroloji
+2025-09-09,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"idrar yaparken ağrı, sık idrara çıkma, yanma hissi",İdrar Yolu Enfeksiyonu,Üroloji
+2025-09-12,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-07,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-12,"idrar yaparken ağrı, sık idrara çıkma, yanma hissi",İdrar Yolu Enfeksiyonu,Üroloji
+2025-09-11,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-10,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-10,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-12,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-14,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-08,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-14,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-12,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-08,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-10,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-09,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-12,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-12,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-07,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-10,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-10,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-09,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-09,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-14,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-08,"nefes darlığı, öksürük, hırıltı",Bronşiyal Astım,Göğüs Hastalıkları
+2025-09-07,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-13,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-08,"baş ağrısı, ışığa hassasiyet, bulantı",Migren,Nöroloji
+2025-09-10,"burun tıkanıklığı, kaşıntı, hapşırık",Alerji,KBB
+2025-09-13,"öksürük, burun akıntısı, hapşırık",Soğuk Algınlığı,Dahiliye
+2025-09-15,"Baş Ağrısı, Bulantı, Hapşırma",Alerji,Dermatoloji.
