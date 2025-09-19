@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Analiz Sonuçları</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/get_df.css' %}">
+
+</head>
+
+<body>
+    <div class="min-h-screen flex items-center justify-center p-4" style="background-color:#f9f9f9;">
+        <div class=" bg-white rounded-2xl shadow-2xl p-8 w-[768px]" style="box-shadow: 0 14px 28px rgba(0,0,0,0.25) , 
+			0 10px 10px rgba(0,0,0,0.22)">
+            <table id="myTable" class="divide-y divide-gray-200 text-sm text-left">
+                <thead class=" bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 font-medium text-gray-700">Tahlil</th>
+                        <th class="px-6 py-3 font-medium text-gray-700">Sonuç</th>
+                        <th class="px-6 py-3 font-medium text-gray-700">Referans Değeri</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="infoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-2xl w-96 relative">
+            <h2 class="text-lg font-bold mb-4" id="hormoneName">Hormon Bilgisi</h2>
+            <p id="modalContent" class="text-gray-700"></p>
+            <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800">✕</button>
+        </div>
+    </div>
+
+
+    <script>
+
+        function initTable() {
+            $(document).ready(function () {
+                $('#myTable').DataTable({
+                    ajax: {
+                        url: "{% url 'upload_data' %}",
+                        dataSrc: ''
+                    },
+                    columns: [
+                        { data: 'Tahlil' },
+                        { data: 'Sonuç' },
+                        { data: 'Referans Değeri' },
+
+                        {
+                            data: null,
+                            render: function (data, type, row) {
+                                if (!row || !row['Referans Değeri'] || !row['Sonuç']) {
+                                    return `<span class="px-2 py-1 bg-gray-300 text-gray-700 rounded">Veri Yok</span>`;
+                                }
+
+
+                                let range = row['Referans Değeri'].split('-');
+                                let floor = parseFloat(range[0].replace(',', '.'));
+                                let ceil = parseFloat(range[1].replace(',', '.'));
+
+                                let dataItem = test_infoJSON.find(item =>
+                                    normalize(item["Hormon/Değer"]) === normalize(row.Tahlil)
+                                );
+
+                                let dataText = dataItem && dataItem.Bilgi ? dataItem.Bilgi : "Bilgi yok";
+
+                                let value = row['Sonuç'];
+
+
+                                if (typeof value === "string") {
+                                    value = parseFloat(value.replace(',', '.'));
+                                }
+
+                                if (isNaN(value)) {
+                                    btnClass = "bg-gray-300 text-gray-700";
+                                    btnText = "Veri Yok";
+
+
+                                }
+
+                                if (value >= floor && value <= ceil) {
+                                    btnClass = "bg-green-500 text-white";
+                                    btnText = "Normal";
+
+                                } else {
+                                    btnClass = "bg-red-500 text-white";
+                                    btnText = "Dikkat";
+                                }
+
+                                return `<button class="px-2 py-1 rounded ${btnClass} show-info-btn tooltip" data-info="${dataText}" data-hormone="${row.Tahlil}" data-tooltip="Bilgi Al">
+                                            ${btnText}
+                                        </button>`;
+                            }
+                        }
+                    ]
+                });
+            });
+        }
+
+    </script>
+
+    {% load static %}
+    <script src="{% static 'js/get_df.js' %}"></script>
+
+</body>
+
+</html>

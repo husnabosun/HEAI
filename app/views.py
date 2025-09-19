@@ -7,6 +7,7 @@ from .forms import SymptomForm
 from openai import OpenAI
 from transformers import pipeline
 import os
+import pymupdf
 import pandas as pd
 import json
 import string
@@ -236,10 +237,10 @@ def trend_data(request):
             date_str = row['date_str']
             all_symptoms[symptom][date_str] = all_symptoms[symptom].get(date_str, 0) + 1
 
-    # Tüm tarihleri haftalık sıraya göre al
+    
     dates = pd.date_range(start=week_ago, end=today).strftime("%Y-%m-%d").tolist()
 
-    # Semptomları dataframe benzeri yapı yap
+    
     symptom_counts = {}
     for symptom, counts in all_symptoms.items():
         symptom_counts[symptom] = [counts.get(date, 0) for date in dates]
@@ -255,4 +256,63 @@ def trend_data(request):
 def charts(request):
     return render(request, "charts.html")
 
+
+
+
+def get_df(request):
+    return render(request, "get_df.html")
+
+
+def upload_view(request):
+    df_list = []
+    test_results = []
+    column_names = None
     
+    if request.method == "POST":
+        raw_doc = request.FILES['pdf_file']
+        doc = pymupdf.open(stream=raw_doc.read(), filetype='pdf')
+        page = doc[0]
+        tables = (page.find_tables()).tables
+
+        if tables:
+            table = tables[0]
+            raw_data = table.extract()
+            # df = table.to_pandas()
+
+            column_names = raw_data[0]
+            data = raw_data[1:]
+
+
+            df = pd.DataFrame(data, columns=column_names)
+
+            df_list.append(df)
+        
+            full_df = pd.concat(df_list, ignore_index=True)
+            without_date_filtered_df = full_df.drop(columns='Tarih').iloc[:20]
+            
+            
+            for i in range(20):
+                name = without_date_filtered_df.loc[i]['Tahlil']
+                if '<' in without_date_filtered_df.loc[i]['Sonuç']:
+                    result = without_date_filtered_df.loc[i]['Sonuç']
+                else:
+                    if ',' in without_date_filtered_df.loc[i]['Sonuç']:
+                        result = float(without_date_filtered_df.loc[i]['Sonuç'].replace(",", "."))
+                    else:                    
+                        result = float(without_date_filtered_df.loc[i]['Sonuç'])
+                    
+                health_range = without_date_filtered_df.loc[i]['Referans\nDeğeri']
+                
+                a = {'Tahlil' : name, 'Sonuç' : result, 'Referans Değeri': health_range}
+                test_results.append(a)
+            print(test_results)
+            request.session["test_results"] = test_results
+            
+            return redirect("get_df")
+        
+    return render(request, "upload_view.html")
+
+def upload_data(request):
+    data = request.session.get("test_results", [])
+    print(data)
+    return JsonResponse(data, safe=False)

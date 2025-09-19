@@ -9,18 +9,23 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
     <div class="page-wrapper">
-                    <div class="sidebar-buttons">
-                <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
-                <button data-tooltip="Bilmiyorum"><i class="fa-solid fa-user"></i></button>
-                <button data-tooltip="Randevu Al"><i class="fa-solid fa-stethoscope"></i></button>
-                <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
-            </div>
+        <div class="sidebar-buttons">
+            <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
+
+
+            <button onclick="location.href='{% url 'charts' %}'" data-tooltip="Yaygın Hastalıkları Gör">
+                <i class="fa-solid fa-chart-simple"></i>
+            </button>
+
+
+            <button  onclick="location.href='{% url 'upload_view' %}'" data-tooltip="Tahlil İncele"><i class="fa-solid fa-vial-circle-check"></i></button>
+            <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
+        </div>
         <div class="container" id="main-container">
             <div class="form-container sign-in-container">
 
