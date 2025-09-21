@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+{% include "partials/links.html" %}
+    <title>Profil</title>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center" style="font-family: Montserrat;">
+    
+    <!-- Sabit navbar -->
+    <div class="fixed top-0 left-0 w-full z-50">
+        {% include "partials/navbar.html" %}
+    </div>
+
+    <!-- İçerik (navbarın altında başlaması için pt-16 ekledik) -->
+    <div class="w-full flex flex-col items-center pt-20 pb-10">
+        
+        <!-- Başlık -->
+        <h1 class="text-3xl font-medium text-gray-800 mb-8">Profilim</h1>
+
+        <!-- Hastalıklar -->
+<div class="bg-white rounded-2xl shadow-2xl p-8 w-[768px]" 
+     style="box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)">
+
+    <!-- Flex container -->
+    <div class="flex items-center justify-between bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition">
+        <!-- TC -->
+        <h2 class="text-lg font-medium text-gray-600">
+            T.C. Numarası : {{ user.tc }}
+        </h2>
+
+        <!-- Profil resmi -->
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+             alt="Profil Resmi"
+             class="w-12 h-12 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10">
+    </div>
+
+</div>
+
+
+    </div>
+
+</body>
+</html>

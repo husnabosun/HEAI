@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Giriş Yap</title>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+</head>
+
+<body>
+	<style>
+		#login-p{
+		    font-size: 14px;
+            font-weight: 100;
+            line-height: 20px;
+            letter-spacing: 0.5px;
+            margin: 20px 0 30px;
+		}
+	</style>
+	<div class="container" id="container">
+		<div class="form-container sign-up-container">
+			<form method="post" action="{% url 'register' %}">
+				{% csrf_token %}
+				<h1>Kayıt Ol</h1>
+				<input type="text" name="tc" placeholder="TC Kimlik No" required maxlength="11"  />
+				<input type="password" name="password" placeholder="Şifre" required />
+				
+				<button type="submit" id="signUp">Kayıt Ol</button>
+			</form>
+		</div>
+		<div class="form-container sign-in-container">
+			<form method="post" action="{% url 'user_login' %}">
+				{% csrf_token %}
+				<h1>Giriş Yap</h1>
+				<input type="text" name="tc" placeholder="T.C Kimlik No" required maxlength="11"/>
+				<input type="password" name="password" placeholder="Şifre" required/>
+				<a href="#">Şifrenizi mi unuttunuz?</a>			
+				<button type="submit" id="signIn">Giriş Yap</button>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1>Hoşgeldiniz!</h1>
+					<p id="login-p">Evinizden sağlık hizmetleri almak için giriş yapın</p>
+					<button  type="button" class="ghost" id="overlaySignIn">Giriş Yap</button>
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Merhaba!</h1>
+					<p id="login-p">Evinizden sağlık hizmetleri almak için kayıt olabilirsiniz.</p>
+					<button type="button"class="ghost" id="overlaySignUp">Kayıt Ol</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% load static %}
+	<script src="{% static 'js/ui.js' %}"></script>
+</body>
+</html>

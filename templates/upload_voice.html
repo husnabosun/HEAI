@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+{% include "partials/links.html" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ses Kayıt ve Analiz</title>
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.75rem;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-input-label:hover {
+            border-color: #934727;
+            background-color: #eff6ff;
+        }
+
+        .file-input-wrapper.has-file .file-input-label {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+        }
+
+        .file-icon {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1rem;
+            stroke: #6b7280;
+        }
+
+        .file-input-wrapper:hover .file-icon {
+            stroke: #c2d59b;
+        }
+
+        .file-input-wrapper.has-file .file-icon {
+            stroke: #ca9f10;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #FF4B2B 0%, #c13921 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(193, 57, 33, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .record-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .record-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .stop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75, 85, 99, 0.4);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4);
+        }
+
+        .form-container {
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
+
+        .recording-indicator {
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+        }
+
+        .file-input-label.drag-over {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+            transform: scale(1.02);
+        }
+
+        .file-input-wrapper input[type=file]:focus+.file-input-label {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .selected-file {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #0ea5e9;
+        }
+
+        @media (max-width: 640px) {
+            .file-input-label {
+                padding: 2rem 1rem;
+            }
+            .file-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-[#f9f9f9] min-h-screen" style="font-family: 'Montserrat', sans-serif;">
+    <div class="form-container" style="background-color:#f9f9f9;">
+{% include "partials/navbar.html" %}
+        <div class="flex items-center justify-center p-4 min-h-[80vh]" style="background-color:#f9f9f9;">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 w-[768px]" style="box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-medium text-gray-800 mb-2">Sesli Danışma ve Analiz</h1>
+                    <p class="text-gray-600">Sesli görüşme başlat veya eski görüşmeleri danış</p>
+                </div>
+
+                <!-- Ses Kayıt Bölümü -->
+                <div class="mb-4 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        </svg>
+                        Görüşme Başlat
+                    </h3>
+                    
+                    <div class="text-center space-y-4">
+                        <div id="recordingStatus" class="hidden">
+                            <div class="recording-indicator inline-flex items-center space-x-2 text-red-500 mb-4">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <span class="font-medium">Görüşme Kaydediliyor...</span>
+                                <span id="recordingTime" class="font-mono text-lg">00:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center space-x-4">
+                            <button id="start" class="record-btn px-6 py-3 text-white font-semibold rounded-lg focus:outline-none focus:ring-4 focus:ring-red-300">
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                    </svg>
+                                    Görüşmeyi Başlat
+                                </span>
+                            </button>              
+                            <button id="stop" class="stop-btn px-6 py-3 text-white font-semibold rounded-lg focus:outline-none focus:ring-4 focus:ring-gray-300" disabled>
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+                                    </svg>
+                                    Görüşmeyi Bitir
+                                </span>
+                            </button>
+                            
+                            <a id="download" download="kayit.wav" class="download-btn px-6 py-3 text-white font-semibold rounded-lg focus:outline-none focus:ring-4 focus:ring-green-300 hidden">
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    Kaydı İndir
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Bölümü -->
+                <form id="voiceForm" enctype="multipart/form-data" method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="space-y-4">
+                        {{ form.as_p }}
+                    </div>
+
+                    <button type="submit" class="submit-btn w-full py-4 px-6 text-white font-semibold rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-300">
+                        <span class="flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            Yapay Zeka Analizi
+                        </span>
+                    </button>
+                </form>
+
+                <!-- Özet Bölümü -->
+                <div class="mt-4">
+                    <h2 class="text-xl font-medium text-gray-800 mb-2 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        AI Özet
+                    </h2>
+                    <div id="summaryOutput" class="summary-box p-6 rounded-xl">
+                        <p class="text-gray-600 italic">Özet burada görünecek...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordingInterval;
+        let recordingStartTime;
+
+        // DOM Elements
+        const startBtn = document.getElementById('start');
+        const stopBtn = document.getElementById('stop');
+        const downloadLink = document.getElementById('download');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const form = document.getElementById('voiceForm');
+        const summaryOutput = document.getElementById('summaryOutput');
+
+        // Initialize MediaRecorder
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    downloadLink.href = audioUrl;
+                    downloadLink.classList.remove('hidden');
+                    
+                    // Create file for form submission
+                    const file = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+                    showSelectedFile(file);
+                    
+                    audioChunks = [];
+                };
+            })
+            .catch(error => {
+                console.error('Mikrofon erişimi reddedildi:', error);
+                alert('Mikrofon erişimi için izin vermeniz gerekiyor.');
+            });
+
+        // Recording functions
+        startBtn.onclick = () => {
+            if (mediaRecorder && mediaRecorder.state === 'inactive') {
+                mediaRecorder.start();
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                recordingStatus.classList.remove('hidden');
+                downloadLink.classList.add('hidden');
+                
+                recordingStartTime = Date.now();
+                recordingInterval = setInterval(updateRecordingTime, 1000);
+            }
+        };
+
+        stopBtn.onclick = () => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                recordingStatus.classList.add('hidden');
+                clearInterval(recordingInterval);
+            }
+        };
+
+        function updateRecordingTime() {
+            const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            recordingTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Form submission
+// Form submission - DÜZELTİLMİŞ
+form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Sayfanın yenilenmesini engelle
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    // Loading durumunu göster
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<div class="flex items-center justify-center"><div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>Analiz ediliyor...</div>';
+    
+    const formData = new FormData(form);
+    
+    try {
+        const response = await fetch(form.action || window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        if(data.summary){
+            summaryOutput.innerHTML = `<p class="text-gray-800 leading-relaxed">${data.summary}</p>`;
+        } else {
+            summaryOutput.innerHTML = '<p class="text-red-600">Özet alınamadı. Lütfen tekrar deneyin.</p>';
+        }
+    } catch (error) {
+        console.error('Form submission error:', error);
+        summaryOutput.innerHTML = '<p class="text-red-600">Bir hata oluştu. Lütfen tekrar deneyin.</p>';
+    } finally {
+        // Button'ı eski haline döndür
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    }
+});
+    </script>
+</body>
+
+</html>
+

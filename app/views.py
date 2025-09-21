@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.conf import settings
-from app.models import MyUser, SymptomRecord
-from .forms import SymptomForm
+from app.models import MyUser, SymptomRecord, VoiceRecord
+from .forms import SymptomForm, VoiceRecordForm
 from openai import OpenAI
 from transformers import pipeline
+from django.contrib import messages
 import os
+import whisper
 import pymupdf
 import pandas as pd
 import json
@@ -16,6 +18,7 @@ from datetime import datetime, timedelta
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,26 +33,58 @@ def register(request):
     if request.method == "POST":
         tc = request.POST.get("tc")
         password = request.POST.get("password")
-        if tc and password:
+        if not tc or not password:
+            messages.error(request, "T.C. kimlik numarası ve şifre zorunludur.")
+            return render(request, "user_login.html")
+        
+        # TC kontrolü
+        if len(tc) != 11 or not tc.isdigit():
+            messages.error(request, "T.C. kimlik numarası 11 haneli olmalı ve sadece rakam içermelidir.")
+            return render(request, "user_login.html")
+        
+        # Kullanıcı zaten var mı kontrol et
+        if MyUser.objects.filter(tc=tc).exists():
+            messages.error(request, "Bu T.C. kimlik numarası ile zaten kayıtlı bir kullanıcı var.")
+            return render(request, "user_login.html")
+        
+        try:
             MyUser.objects.create_user(tc=tc, password=password)
-            print("başarı")
-            return redirect("login")
-    return render(request, "login.html")
+            messages.success(request, "Kayıt başarılı! Giriş yapabilirsiniz.")
+            print("Kayıt başarılı")
+            return redirect("user_login")
+        except Exception as e:
+            messages.error(request, f"Kayıt sırasında hata oluştu: {str(e)}")
+            return render(request, "user_login.html")
+    
+    return render(request, "user_login.html")
+
 
 
 def user_login(request):
     if request.method == "POST":
         tc = request.POST.get("tc")
         password = request.POST.get("password")
+        
+        print(f"tc: {tc}, password: {password}") 
+        
+        if not tc or not password:
+            messages.error(request, "T.C. kimlik numarası ve şifre zorunludur.")
+            return render(request, "user_login.html")
+        
         user = authenticate(request, tc=tc, password=password)
+        print(f"user: {user}")
+        
         if user is not None:
             login(request, user)
-            print("başarı")
+            messages.success(request, f"Hoş geldiniz!")
+            print("Giriş başarılı")
             return redirect("symptom_input")
         else:
-            print("failure")
-            return render(request, "login.html", {"error": "T.C. veya şifre hatalı"})
-    return render(request, "login.html")
+            messages.error(request, "T.C. kimlik numarası veya şifre hatalı.")
+            print("Giriş başarısız")
+            return render(request, "user_login.html")
+    
+    return render(request, "user_login.html")
 
 
 def symptom_input(request):
@@ -126,7 +161,7 @@ def call_gpt(prompt):
 
 def predict_disease(symptoms):
     pipe = pipeline("text-classification", model="shanover/symps_disease_bert_v3_c41", return_all_scores=True )
-    response = pipe("I have a mild cough and sneezing. My nose runs")
+    response = pipe(symptoms)
     result = sorted(response[0], key=lambda x: x["score"], reverse=True)[:3]
 
     with open("config.json") as f:
@@ -142,7 +177,7 @@ def predict_disease(symptoms):
 
         disease_in_turkish = call_gpt(prompt)
 
-        output.append([disease_in_turkish, (f"{round(i['score']*100, 3)}%")])
+        output.append([disease_in_turkish, (f"{round(i['score']*100, 2)}%")])
 
     return output
 
@@ -316,3 +351,64 @@ def upload_data(request):
     data = request.session.get("test_results", [])
     print(data)
     return JsonResponse(data, safe=False)
+
+
+
+def upload_voice(request):
+    model = whisper.load_model("small", device="cpu")
+    if request.method == 'GET':
+        form = VoiceRecordForm()
+        return render(request, 'upload_voice.html', {'form': form})
+
+    if request.method == 'POST':
+        form = VoiceRecordForm(request.POST, request.FILES)
+        if form.is_valid():
+            voice = form.save(commit=False)
+            voice.save()
+
+            audio_path = voice.audio_file.path
+            result = model.transcribe(audio_path)
+            transcript_text = result["text"]
+            
+            
+            prompt = f"""
+            Verilen hasta-doktor diyalogunu oku ve yapılandırılmış bir özet çıkar. Özet aşağıdaki bölümleri içermeli:
+
+            1. Hastanın ana şikayetleri ve genel durumu.
+            2. Doktorun verdiği her ilacı ayrı ayrı listele. Her ilacın:
+            - Hangi şikayeti tedavi ettiği
+            - Olası hafif yan etkileri
+            3. Doktorun ilaç dışında verdiği öneriler (dinlenme, sıvı tüketimi, dikkat edilmesi gerekenler)
+            4. Doktorun hastaya hangi durumlarda tekrar gelmesini söylediği
+            5. Özet, hastaya hitap bazlı olacak şekilde yazılsın; örneğin "Boğaz ağrınız olduğunu belirttiniz, doktor Tylol hod reçete etti ve ..." gibi.
+                Diyalog: {transcript_text}"""
+
+
+            response = call_gpt(prompt)
+            
+            voice.summary = response  
+            voice.save()
+
+            return JsonResponse({'summary': voice.summary})
+        
+        else:
+            return JsonResponse({'error': 'Form geçersiz'}, status=400)
+    else:
+        form = VoiceRecordForm()
+        return render(request, 'upload_voice.html', {'form': form}) 
+
+
+
+def appointment_summary(request):
+    voice_records = VoiceRecord.objects.all() 
+    return render(request, 'appointment_summary.html', {'voice_records': voice_records})
+
+
+def contact_view(request):
+    return render(request, 'contact.html')
+
+@login_required
+def profile_view(request):
+    user = request.user  
+    return render(request, "profile.html", {"user": user})
+

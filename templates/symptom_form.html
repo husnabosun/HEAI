@@ -4,79 +4,389 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Giriş Yap</title>
+    <title>Ana Sayfa</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" />
 
+    <style>
+        .overlay-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .summary-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px;
+            max-width: 500px;
+            min-height: 120px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-text {
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+
+        .loading-container-t {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            /* kutunun tüm yüksekliğini kapla */
+        }
+
+        .loading-spinner-t {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .loading-text-t {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+            text-align: center;
+        }
+
+
+        .result-header {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .result-icon {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            color: #3b82f6;
+        }
+
+        .result-content {
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 13px;
+        }
+
+        .result-section {
+            margin-bottom: 12px;
+        }
+
+        .result-section strong {
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .result-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tedavi UI Stilleri */
+        .treatment-modern-ui {
+            padding: 20px;
+        }
+
+        .treatment-header {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .treatment-icon {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            color: #dc2626;
+        }
+
+        .treatment-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            max-width: 720px;
+            min-height: 200px;
+            max-height: 400px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .treatment-content {
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 15px;
+        }
+
+        .treatment-section {
+            margin-bottom: 12px;
+        }
+
+        .treatment-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .treatment-section strong {
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .form-container form button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container form button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .button-loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-wrapper">
         <div class="sidebar-buttons">
-            <button id="treatment" data-tooltip="Tedavi Tavsiyeleri"> <i class="fa-solid fa-heart"></i></button>
-
-
+            <button id="treatment" data-tooltip="Tedavi Tavsiyeleri">
+                <i class="fa-solid fa-heart"></i>
+            </button>
             <button onclick="location.href='{% url 'charts' %}'" data-tooltip="Yaygın Hastalıkları Gör">
                 <i class="fa-solid fa-chart-simple"></i>
             </button>
-
-
-            <button  onclick="location.href='{% url 'upload_view' %}'" data-tooltip="Tahlil İncele"><i class="fa-solid fa-vial-circle-check"></i></button>
-            <button data-tooltip="Aile Hekimine Sor"><i class="fa-solid fa-cog"></i></button>
+            <button onclick="location.href='{% url 'upload_view' %}'" data-tooltip="Tahlil İncele">
+                <i class="fa-solid fa-vial-circle-check"></i>
+            </button>
+            <button onclick="location.href='{% url 'upload_voice' %}'" data-tooltip="Aile Hekimine Sor">
+                <i class="fa-solid fa-cog"></i>
+            </button>
         </div>
+
         <div class="container" id="main-container">
             <div class="form-container sign-in-container">
-
-                <form method="post" action="">
-                    <h1>Şikayetini Yaz </h1>
+                <form method="post" action="" id="main-form">
+                    <h1>Şikayetini Yaz</h1>
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit">Yapay Zekaya Sor</button>
+                    <button type="submit" id="submit-btn">
+                        <span id="button-text">Yapay Zekaya Sor</span>
+                        <div class="button-loading" id="button-loading"></div>
+                    </button>
                 </form>
             </div>
+
             <div class="overlay-container">
-                <div class="overlay-container-content">
+                <!-- Yükleniyor animasyonu -->
+                <div class="loading-container" id="loading-container">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Analiz ediliyor, lütfen bekleyin...</div>
+                </div>
+
+                <!-- Orijinal veri yapısı (gizli - tedavi mekanizması için) -->
+                <div style="display: none;">
                     <div class="symptoms">
                         {% if output_to_show %}
-                        <h3>Şikayetler</h3>
-                        <p id="symptom-p">{{ output_to_show}}</p>
-                        {% endif%}
+                        <p id="symptom-p">{{ output_to_show }}</p>
+                        {% endif %}
                     </div>
                     <div class="disease-name">
                         {% if disease_predict %}
-                        <h3>Olası Hastalıklar</h3>
-                        {% for i in disease_predict%}
+                        {% for i in disease_predict %}
                         <p id="disease-p">Hastalık : {{ i.0 }}<br>
                             Tahmin Doğruluk Oranı : {{ i.1 }}
                         </p>
                         {% endfor %}
-                        {% endif%}
+                        {% endif %}
                     </div>
                     <div class="disease-branch">
                         {% if recommended_branch %}
-                        <h3>Başvurmanız Gereken Dal</h3>
-
-                        {% for i in recommended_branch%}
-                        <p id="branch-p">{{i}}<br>
-                        </p>
+                        {% for i in recommended_branch %}
+                        <p id="branch-p">{{i}}<br></p>
                         {% endfor %}
-                        {% endif%}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- AI Özet Bölümü -->
+                <div id="results-content">
+                    <h2 class="result-header">
+                        <svg class="result-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                            </path>
+                        </svg>
+                        AI Analiz Sonucu
+                    </h2>
+                    <div class="summary-box">
+                        {% if output_to_show or disease_predict or recommended_branch %}
+                        {% if output_to_show %}
+                        <div class="result-section">
+                            <strong>Şikayetler:</strong>
+                            <div class="result-content">{{ output_to_show }}</div>
+                        </div>
+                        {% endif %}
+
+                        {% if disease_predict %}
+                        <div class="result-section">
+                            <strong>Olası Hastalıklar:</strong>
+                            <div class="result-content">
+                                {% for i in disease_predict %}
+                                <div style="margin-bottom: 6px;">
+                                    • {{ i.0 }} (Doğruluk Oranı: {{ i.1 }})
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if recommended_branch %}
+                        <div class="result-section">
+                            <strong>Başvurmanız Gereken Dal:</strong>
+                            <div class="result-content">
+                                {% for i in recommended_branch %}
+                                • {{ i }}<br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% else %}
+                        <div class="result-content" style="font-style: italic; color: #9ca3af;">
+                            Analiz sonuçları burada görünecek...
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container treatment-container" id="treatment-response" style="display:none;">
-            <div class="form-container sign-in-container"> </div>
+            <div class="form-container sign-in-container">
+                <!-- Modern Tedavi UI -->
+                <div class="treatment-modern-ui">
+                    <h2 class="treatment-header">
+                        <svg class="treatment-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                        Tedavi Önerileri
+                    </h2>
+                    <div class="treatment-box">
+                        <div class="treatment-content" style="font-style: italic; color: #9ca3af;">
+                            Tedavi önerileri burada görünecek...
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script src="{% static 'js/ui.js' %}"></script>
+
+    <script>
+        // Form gönderimi için yükleniyor animasyonu
+        document.getElementById('main-form').addEventListener('submit', function (e) {
+            const submitBtn = document.getElementById('submit-btn');
+            const buttonText = document.getElementById('button-text');
+            const buttonLoading = document.getElementById('button-loading');
+            const loadingContainer = document.getElementById('loading-container');
+            const resultsContent = document.getElementById('results-content');
+
+            // Buton durumunu değiştir
+            submitBtn.disabled = true;
+            buttonText.style.opacity = '0';
+            buttonLoading.style.display = 'block';
+
+            // Ana yükleniyor ekranını göster
+            loadingContainer.style.display = 'block';
+            resultsContent.style.display = 'none';
+        });
+
+        // Sayfa yüklendiğinde kutuyu her zaman göster
+        window.addEventListener('load', function () {
+            // Kutu her zaman görünür olsun
+            document.getElementById('results-content').style.display = 'block';
+            document.getElementById('loading-container').style.display = 'none';
+
+            // Buton durumunu sıfırla
+            const submitBtn = document.getElementById('submit-btn');
+            const buttonText = document.getElementById('button-text');
+            const buttonLoading = document.getElementById('button-loading');
+
+            submitBtn.disabled = false;
+            buttonText.style.opacity = '1';
+            buttonLoading.style.display = 'none';
+        });
+    </script>
 </body>
 
 </html>

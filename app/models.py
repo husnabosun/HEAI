@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
 class MyUserManager(BaseUserManager):
@@ -13,16 +13,14 @@ class MyUserManager(BaseUserManager):
     def create_superuser(self, tc, password=None, **extra_fields):
         if not tc:
             raise ValueError("Username field should be filled")
-        user = self.model(tc=tc, **extra_fields)
-        user.set_password(password)
+        user = self.create_user(tc=tc, password=password)
         user.is_admin = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
 
-class MyUser(AbstractBaseUser):
-    tc = models.CharField(max_length=11, unique=True, null=True, blank=True)
-    username = models.CharField(max_length=30, unique=True, null=True, blank=True)
+class MyUser(AbstractBaseUser, PermissionsMixin):
+    tc = models.CharField(max_length=11, unique=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     
@@ -53,3 +51,11 @@ class SymptomRecord(models.Model):
     branch = models.CharField(max_length=255)
     def __str__(self):
         return f"{self.disease} - ({self.created_at.date()})"
+    
+
+
+class VoiceRecord(models.Model):
+    title = models.CharField(max_length=100)
+    audio_file = models.FileField(upload_to='audio/')
+    summary = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)

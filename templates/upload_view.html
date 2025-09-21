@@ -2,11 +2,9 @@
 <html lang="tr">
 
 <head>
-    <meta charset="UTF-8">
+{% include "partials/links.html" %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tahlil Sonucu Analizi</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -87,55 +85,8 @@
 
 <body class="bg-[#f9f9f9] min-h-screen" style="font-family: 'Montserrat', sans-serif;">
     <div class="form-container" style="background-color:#f9f9f9;">
-        <nav class="relative bg-[#ded8d7] text-white ">
-            <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-                <div class="relative flex h-16 items-center justify-between">
-                    <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+{% include "partials/navbar.html" %}
 
-
-                    </div>
-                    <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div class="flex shrink-0 items-center">
-                            <a href="{% url 'symptom_input' %}">
-                                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                                    alt="Your Company" class="h-8 w-auto" />
-
-                            </a>
-
-                        </div>
-                        <div class="hidden sm:ml-6 sm:block">
-                            <div class="flex space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-white/5 hover:text-white" -->
-                                <a href="#"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Team</a>
-                                <a href="#"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Team</a>
-                                <a href="#"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Projects</a>
-                                <a href="#"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-white/5 hover:text-orange-600">Calendar</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <!-- Profile dropdown -->
-                        <el-dropdown class="relative ml-3">
-                            <button
-                                class="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Open user menu</span>
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt=""
-                                    class="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10" />
-                            </button>
-
-                        </el-dropdown>
-                    </div>
-                </div>
-            </div>
-
-        </nav>
         <div class="flex items-center justify-center p-4 min-h-[80vh]" style="background-color:#f9f9f9;" >
         <div class=" bg-white rounded-2xl shadow-2xl p-8 w-[768px]" style="box-shadow: 0 14px 28px rgba(0,0,0,0.25) , 
 			0 10px 10px rgba(0,0,0,0.22)">

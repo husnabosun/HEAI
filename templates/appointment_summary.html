@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+   {% include "partials/links.html" %}
+ 
+    <title>Hastalık Listesi</title>
+
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center" style="font-family: Montserrat;">
+    
+    <!-- Sabit navbar -->
+    <div class="fixed top-0 left-0 w-full z-50">
+        {% include "partials/navbar.html" %}
+    </div>
+
+    <!-- İçerik (navbarın altında başlaması için pt-16 ekledik) -->
+    <div class="w-full flex flex-col items-center pt-20 pb-10">
+        
+        <!-- Başlık -->
+        <h1 class="text-3xl font-medium text-gray-800 mb-8">Randevu Özetlerim</h1>
+
+        <!-- Hastalıklar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+            {% for i in voice_records %}
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition">
+                    <h2 class="text-lg font-medium text-gray-600 mb-3">{{ i.summary }}</h2>
+                    <div class="text-sm font-bold text-gray-400">
+                        Eklendi: {{ i.created_at|date:"d M Y H:i" }}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full text-center text-gray-500">
+                    Henüz kayıt bulunamadı.
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</body>
+</html>
