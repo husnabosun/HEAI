@@ -59,13 +59,12 @@ def register(request):
     return render(request, "user_login.html")
 
 
-
+# giriş fonksiyonu
 def user_login(request):
     if request.method == "POST":
         tc = request.POST.get("tc")
         password = request.POST.get("password")
         
-        print(f"tc: {tc}, password: {password}") 
         
         if not tc or not password:
             messages.error(request, "T.C. kimlik numarası ve şifre zorunludur.")
@@ -86,7 +85,8 @@ def user_login(request):
     
     return render(request, "user_login.html")
 
-
+#şikayet formu, sonuçları gösterir
+@login_required
 def symptom_input(request):
     output_to_show = None
     disease_predict = None
@@ -129,7 +129,7 @@ def symptom_input(request):
         },
     )
 
-
+# hastanın girdiği textten semptomları çeker
 def extract_symptoms(user_text):
     prompt = (
         f"Translate the following text to English and extract only the symptoms mentioned, separated by commas."
@@ -158,7 +158,7 @@ def call_gpt(prompt):
     )
     return response.choices[0].message.content
 
-
+#hugging face modeli ile hastalık tespiti
 def predict_disease(symptoms):
     pipe = pipeline("text-classification", model="shanover/symps_disease_bert_v3_c41", return_all_scores=True )
     response = pipe(symptoms)
@@ -181,7 +181,7 @@ def predict_disease(symptoms):
 
     return output
 
-
+#hstalığa göre dal önerisi
 def determine_branch(disease):
     disease_branch_list = []
     for i in disease:
@@ -196,6 +196,8 @@ def determine_branch(disease):
     return disease_branch_list
 
 
+#ai tedavi önerileri
+@login_required
 @csrf_exempt
 def ai_treatment(request):
     if request.method == "POST":
@@ -214,15 +216,17 @@ def ai_treatment(request):
             prompt = None
             if i.lower() in mild_conditions:
                 prompt = f"""
-            You are a medical assistant.
-            A patient has the following disease: {i}.
-            Give practical treatment recommendations in Turkish, as if explaining to a patient at home.
-            Symptoms are mild, emphasize rest, hydration, and simple measures.
-            - Give 2–3 specific actionable suggestions (for example: “Dinlen, sıcak çay iç, gerekirse doktora başvur”).
-            - Format output like this: 
-            {i} İçin Tedavi Önerileri: <recommendations>
-            - Do not just translate English recommendations; generate context-specific, natural Turkish advice.
-            """
+                You are a medical assistant.
+                A patient has the following disease: {i}.
+                Give practical treatment recommendations in Turkish, as if explaining to a patient at home.
+                - If symptoms are mild, emphasize rest, hydration, and simple measures.
+                - Emphasize that these recommendations are for informational purposes only, 
+                and the patient should always consult a licensed doctor before starting any treatment.
+                - Give 2–3 specific actionable suggestions (for example: “Dinlen, sıcak çay iç, gerekirse doktora başvur”).
+                - Format output like this: 
+                {i} İçin Tedavi Önerileri: <recommendations>
+                - Do not just translate English recommendations; generate context-specific, natural Turkish advice.
+                """
 
             elif i.lower() in serious_conditions:
                 prompt = f"""
@@ -246,6 +250,7 @@ def ai_treatment(request):
 
         return JsonResponse({"recommendations": recommendations})
 
+# yaygın hastalık, branş ve semptom bilgilerini çıkarır
 def trend_data(request):
     csv_path = os.path.join(settings.BASE_DIR, "mock_records.csv")
     df = pd.read_csv(csv_path)
@@ -280,11 +285,28 @@ def trend_data(request):
     for symptom, counts in all_symptoms.items():
         symptom_counts[symptom] = [counts.get(date, 0) for date in dates]
 
+    top_diseases = df['disease'].value_counts().head(3)
+    top_branches = df['branch'].value_counts().head(3)
+    
+    
+    prompt = f"""
+    Son 1 haftadaki verilerde en sık görülen hastalıklar: {', '.join(top_diseases.index.tolist())}.
+    En sık görülen branşlar: {', '.join(top_branches.index.tolist())}.
+    Bu bilgiler ışığında kısa bir yorum yaz: 
+    - Hastalıklar neden öne çıkmış olabilir?
+    - Branş yoğunluğuna göre randevu bulmanın zor olabileceğini belirt,
+    - Hastalara yönelik korunma veya dikkat önerileri
+    Sade ve anlaşılır dilde yaz.
+    """
+    
+    response = call_gpt(prompt)
+    
     data = {
         "dates": dates,
         "disease_counts": {d: disease_counts[d].reindex(dates, fill_value=0).tolist() for d in disease_counts.columns},
         "branch_counts": {b: branch_counts[b].reindex(dates, fill_value=0).tolist() for b in branch_counts.columns},
         "symptom_counts": symptom_counts,
+        'response': response
     }
     return JsonResponse(data)
     
@@ -292,12 +314,13 @@ def charts(request):
     return render(request, "charts.html")
 
 
-
-
+#tahlil bilgileri döndürür
+@login_required
 def get_df(request):
     return render(request, "get_df.html")
 
-
+#tahlil pdf'i df'ye çevirir
+@login_required
 def upload_view(request):
     df_list = []
     test_results = []
@@ -347,13 +370,15 @@ def upload_view(request):
         
     return render(request, "upload_view.html")
 
+# pandas dataframe => json
 def upload_data(request):
     data = request.session.get("test_results", [])
     print(data)
     return JsonResponse(data, safe=False)
 
 
-
+#sesli görüşme portalı
+@login_required
 def upload_voice(request):
     model = whisper.load_model("small", device="cpu")
     if request.method == 'GET':
@@ -397,16 +422,18 @@ def upload_voice(request):
         form = VoiceRecordForm()
         return render(request, 'upload_voice.html', {'form': form}) 
 
-
-
+# sesli görüşme özetleri
+@login_required
 def appointment_summary(request):
     voice_records = VoiceRecord.objects.all() 
     return render(request, 'appointment_summary.html', {'voice_records': voice_records})
 
-
+# iletişim ekranı
+@login_required
 def contact_view(request):
     return render(request, 'contact.html')
 
+# kullanıcı profili
 @login_required
 def profile_view(request):
     user = request.user  

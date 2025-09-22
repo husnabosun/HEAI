@@ -1,0 +1,156 @@
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.75rem;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-input-label:hover {
+            border-color: #934727;
+            background-color: #eff6ff;
+        }
+
+        .file-input-wrapper.has-file .file-input-label {
+            border-color: #10b981;
+            background-color: #ecfdf5;
+        }
+
+        .file-icon {
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 1rem;
+            stroke: #6b7280;
+        }
+
+        .file-input-wrapper:hover .file-icon {
+            stroke: #c2d59b;
+        }
+
+        .file-input-wrapper.has-file .file-icon {
+            stroke: #ca9f10;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #FF4B2B 0%, #c13921 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(193, 57, 33, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .record-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .record-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        }
+
+        .stop-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .stop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75, 85, 99, 0.4);
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4);
+        }
+
+        .form-container {
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
+
+        .recording-indicator {
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+        }
+
+        .file-input-label.drag-over {
+            border-color: #3b82f6;
+            background-color: #dbeafe;
+            transform: scale(1.02);
+        }
+
+        .file-input-wrapper input[type=file]:focus+.file-input-label {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        .selected-file {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #0ea5e9;
+        }
+
+        @media (max-width: 640px) {
+            .file-input-label {
+                padding: 2rem 1rem;
+            }
+            .file-icon {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+        }

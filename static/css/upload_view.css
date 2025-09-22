@@ -1,0 +1,73 @@
+body {
+font-family: 'Montserrat', sans-serif;
+}
+
+.file-input-wrapper {
+position: relative;
+overflow: hidden;
+display: inline-block;
+cursor: pointer;
+width: 100%;
+}
+
+.file-input-wrapper input[type=file] {
+position: absolute;
+left: -9999px;
+}
+
+.file-input-label {
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 3rem 2rem;
+border: 2px dashed #d1d5db;
+border-radius: 0.75rem;
+background-color: #f9fafb;
+transition: all 0.3s ease;
+cursor: pointer;
+}
+
+.file-input-label:hover {
+border-color: #934727;
+background-color: #eff6ff;
+}
+
+.file-input-wrapper.has-file .file-input-label {
+border-color: #10b981;
+background-color: #ecfdf5;
+}
+
+.file-icon {
+width: 3rem;
+height: 3rem;
+margin-bottom: 1rem;
+stroke: #6b7280;
+}
+
+.file-input-wrapper:hover .file-icon {
+stroke: #c2d59b;
+}
+
+.file-input-wrapper.has-file .file-icon {
+stroke: #ca9f10;
+}
+
+.submit-btn {
+background: linear-gradient(135deg, #FF4B2B 0%, #c13921 100%);
+transition: all 0.3s ease;
+transform: translateY(0);
+}
+
+.submit-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 25px #c13921;
+}
+
+.submit-btn:active {
+transform: translateY(0);
+}
+
+.form-container {
+background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+min-height: 100vh;
+}

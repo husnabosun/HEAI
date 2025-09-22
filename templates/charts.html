@@ -45,9 +45,66 @@
                 </h2>
                 <canvas id="symptomChart"></canvas>
             </div>
+
+            <!-- Sağ alt boş alana buton ekle -->
+<div class="fixed bottom-6 right-6">
+    <button id="aiButton" class="border border-[#FF4B2B] bg-[#FF4B2B] text-white px-4 py-2 rounded-lg hover:bg-[#e03f22] transition">
+        AI Tavsiyelerini Gör
+    </button>
+</div>
+
+<!-- Modal HTML -->
+<div id="aiModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-[500px] max-w-full p-6 relative">
+        <h3 class="text-lg font-bold mb-4">AI Önerileri</h3>
+        <div id="aiContent" class="text-gray-700 mb-4">
+            Yükleniyor...
+        </div>
+        <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 font-bold">×</button>
+    </div>
+</div>
+
         </div>
     </div>
     <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    const aiButton = document.getElementById("aiButton");
+    const aiModal = document.getElementById("aiModal");
+    const closeModal = document.getElementById("closeModal");
+    const aiContent = document.getElementById("aiContent");
+
+    let aiDataLoaded = false;
+
+    aiButton.addEventListener("click", async () => {
+        aiModal.classList.remove("hidden");
+        aiModal.classList.add("flex");
+
+        if (!aiDataLoaded) {
+            try {
+                const response = await fetch("/trend_data");
+                const data = await response.json();
+                aiContent.innerText = data.response || "AI özet verisi alınamadı.";
+                aiDataLoaded = true;
+            } catch (err) {
+                aiContent.innerText = "AI özet verisi alınamadı.";
+                console.error(err);
+            }
+        }
+    });
+
+    closeModal.addEventListener("click", () => {
+        aiModal.classList.add("hidden");
+        aiModal.classList.remove("flex");
+    });
+
+    // Modal dışına tıklayınca kapatma
+    aiModal.addEventListener("click", (e) => {
+        if (e.target === aiModal) {
+            aiModal.classList.add("hidden");
+            aiModal.classList.remove("flex");
+        }
+    });
+});
         function interpolateColor(color1, color2, factor = 0.5) {
             const c1 = color1.match(/\w\w/g).map(x => parseInt(x, 16));
             const c2 = color2.match(/\w\w/g).map(x => parseInt(x, 16));

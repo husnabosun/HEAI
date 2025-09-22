@@ -1,0 +1,199 @@
+.overlay-container {
+    position: relative;
+    min-height: 400px;
+}
+
+.summary-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 20px;
+    max-width: 500px;
+    min-height: 120px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.loading-container {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.loading-text {
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+
+.loading-container-t {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    /* kutunun tüm yüksekliğini kapla */
+}
+
+.loading-spinner-t {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.loading-text-t {
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+.result-header {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.result-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    color: #3b82f6;
+}
+
+.result-content {
+    color: #6b7280;
+    line-height: 1.4;
+    font-size: 13px;
+}
+
+.result-section {
+    margin-bottom: 12px;
+}
+
+.result-section strong {
+    font-size: 13px;
+    color: #374151;
+}
+
+.result-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Tedavi UI Stilleri */
+.treatment-modern-ui {
+    padding: 20px;
+}
+
+.treatment-header {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.treatment-icon {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    color: #dc2626;
+}
+
+.treatment-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 720px;
+    min-height: 200px;
+    max-height: 400px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.treatment-content {
+    color: #6b7280;
+    line-height: 1.4;
+    font-size: 15px;
+}
+
+.treatment-section {
+    margin-bottom: 12px;
+}
+
+.treatment-section:last-child {
+    margin-bottom: 0;
+}
+
+.treatment-section strong {
+    font-size: 13px;
+    color: #374151;
+}
+
+.form-container form button {
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.button-loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}

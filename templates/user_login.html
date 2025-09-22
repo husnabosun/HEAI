@@ -18,7 +18,20 @@
             letter-spacing: 0.5px;
             margin: 20px 0 30px;
 		}
+		.message {
+			background: #e0f0ff;
+			border: 1px solid #a0d0ff;
+			padding: 10px;
+			margin-bottom: 15px;
+			border-radius: 5px;
+			color: #004080;
+    }
 	</style>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form method="post" action="{% url 'register' %}">
